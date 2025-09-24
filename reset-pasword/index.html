@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Open cityAmbulance</title>
+    <style>
+      body {
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        margin: 24px;
+      }
+      #fallback {
+        display: none;
+        margin-top: 12px;
+      }
+      code {
+        padding: 2px 4px;
+        background: #f4f4f4;
+        border-radius: 4px;
+      }
+      a {
+        text-decoration: underline;
+      }
+    </style>
+    <script>
+      window.onload = () => {
+        const params = new URLSearchParams(location.search);
+        const token = params.get("token") || "";
+        const appURL = `cityAmbulance://reset-password${
+          token ? `?token=${encodeURIComponent(token)}` : ""
+        }`;
+
+        // Try to open the app immediately
+        location.href = appURL;
+
+        // Show fallback after ~1s if nothing happened
+        setTimeout(() => {
+          document.getElementById("fallback").style.display = "block";
+          document.getElementById("open-link").href = appURL;
+          document.getElementById("token").textContent =
+            token || "(no token found)";
+        }, 1100);
+      };
+    </script>
+  </head>
+  <body>
+    <h1>Opening cityAmbulance…</h1>
+    <p>If nothing happens automatically, use the options below.</p>
+
+    <div id="fallback">
+      <p><a id="open-link" href="#">Open in app</a></p>
+      <p>Or copy this code into the app: <code id="token"></code></p>
+    </div>
+  </body>
+</html>
